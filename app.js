@@ -1,20 +1,46 @@
-// http 모듈은 node.js에서 기본으로 제공하는 모듈이므로 설치가 필요 없음.
-const http = require('http');
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-const port = process.env.PORT || 3000;
+var index = require('./routes/index');
+var users = require('./routes/users');
 
-// 서버가 실행된 후의 동작을 Callback Function으로 등록
-// req : 요청 객체
-// res : 응답 객체
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    // 응답 정보 write
-    res.write('Hello ');
-    // 응답 정보 write+end
-    res.end('sungsoo!!###%%%%%\n');
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', index);
+app.use('/users', users);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-server.listen(port, () => {
-    console.log(`Server running at ${port}`);
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
 });
+
+module.exports = app;
