@@ -4,11 +4,26 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+//mongolab connect
+mongoose.connect('mongodb://jins3569:1q2w3e4r!@@ds151059.mlab.com:51059/ict_project');
+
+var db = mongoose.connection;
+db.on('error', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("DB error :",err);
+});
+db.once('open', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
