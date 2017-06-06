@@ -81,7 +81,7 @@ function onListening() {
 
 
 //mongolab connect
-mongoose.connect('mongodb://jins3569:1q2w3e4r!@@ds151059.mlab.com:51059/ict_project', function(error) {
+mongoose.connect('mongodb://ict:1234@ds151059.mlab.com:51059/ict_project', function(error) {
 //mongoose.connect('mongodb://127.0.0.1:27017', null, function(error) {
 // Check error in initial connection. There is no 2nd param to the callback.
     console.log("Not Connected to mongolab server");
