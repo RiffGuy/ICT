@@ -12,38 +12,23 @@ var users = require('./routes/users');
 var app = express();
 
 
-/**
- * Module dependencies.
- */
-
+//Module dependencies.
 var debug = require('debug')('myapp:server');
 var http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-
+//Get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
+//Create HTTP server.
 var server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-
+//Listen on provided port, on all network interfaces.
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
+//Normalize a port into a number, string, or false.
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -60,10 +45,7 @@ function normalizePort(val) {
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
-
+//Event listener for HTTP server "error" event.
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -88,10 +70,7 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+//Event listener for HTTP server "listening" event.
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
@@ -101,10 +80,14 @@ function onListening() {
 }
 
 
-
 //mongolab connect
-mongoose.connect('mongodb://jins3569:1q2w3e4r!@@ds151059.mlab.com:51059/ict_project');
+mongoose.connect('mongodb://jins3569:1q2w3e4r!@@ds151059.mlab.com:51059/ict_project', function(error) {
+//mongoose.connect('mongodb://127.0.0.1:27017', null, function(error) {
+// Check error in initial connection. There is no 2nd param to the callback.
+    console.log("Not Connected to mongolab server");
+});
 
+console.log("hehehe");
 var db = mongoose.connection;
 db.on('error', function(){
     // CONNECTED TO MONGODB SERVER
