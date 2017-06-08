@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>
-		<%= title %> 부트스트랩 101 템플릿</title>
+		<%= title %> </title>
 
 	<link href="/stylesheets/mdb.min.css" rel="stylesheet">
 
@@ -21,47 +21,6 @@
     <script type="text/javascript" src="/javascripts/mdb.min.js"></script>
 
 
-    <script type="text/javascript">
-        <%if (data != null){
-            var a = 0;
-            var label_list="";
-            var data_list="";
-
-            for (var i = 0 ; i < data.length; i++){
-                label_list += data[i].iot_date.getSeconds() + ", ";
-                data_list += data[i].iot_data +  ", ";
-            }
-
-            label_list.substring(0,label_list.length -2);
-            data_list.substring(0,data_list.length -2);
-        %>
-        $(function () {
-            var data = {
-            labels: [ <%= label_list %> ],
-            datasets: [
-                {
-                    label: "My First dataset",
-                    fillColor: "rgba(110,110,220,0.5)",
-                    strokeColor: "rgba(110,110,220,1)",
-                    pointColor: "rgba(110,110,220,1)",
-                    pointStrokeColor: "#fff",
-                    pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data:[ <%= data_list %>]
-                }]
-            };
-
-            var option = {
-            responsive: true,
-            };
-
-            // Get the context of the canvas element we want to select
-            var ctx = document.getElementById("myChart").getContext('2d');
-            var myLineChart = new Chart(ctx).Line(data, option); //'Line' defines type of the chart.
-
-        });
-        <% }%>
-    </script>
 </head>
 
 <body>
@@ -78,45 +37,39 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#">Project name</a>
-			</div>
-			<!---->
-			<!-- 로그인 부분 -->
-			<div id="navbar" class="navbar-collapse collapse">
-				<form class="navbar-form navbar-right">
-					<div class="form-group">
-						<input type="text" placeholder="Email" class="form-control">
-					</div>
-					<div class="form-group">
-						<input type="password" placeholder="Password" class="form-control">
-					</div>
-					<button type="submit" class="btn btn-success">Sign in</button>
-				</form>
-			</div>
+            </div>
 			<!--/.navbar-collapse -->
 		</div>
 	</nav>
 
     <% if (data != null){ %>
-        <div class="container">
-            <canvas id="myChart"></canvas>
+        <%- include ./graph.ejs %>
+        <div class="container text-right">
+            <a href="/" class="btn btn-primary" role="button">Back</a>
         </div>
     <% } %>
 
 
     <!-- 리스트 -->
-	<div class="container">
-        <div class="list-group">
-            <a href="/users" class="list-group-item">id0</a>
-            <a href="/users" class="list-group-item">id1</a>
-            <a href="/users" class="list-group-item">id2</a>
-            <a href="/users" class="list-group-item">id3</a>
-            <a href="/users" class="list-group-item">id4</a>
+
+    <% if (id_list != null){ %>
+        <div class="container">
+            <div class="list-group">
+                <% for (var i = 0; i < id_list.length ; i++){
+                    var path = "/api/data/" + id_list[i];
+                %>
+                    <a href= <%= path %> class="list-group-item">id : <%=id_list[i]%></a>
+                <% } %>
+            </div>
         </div>
-        <hr>
-		<footer>
-			<p>&copy; Company 2014</p>
-		</footer>
-	</div>
+    <% } %>
+        <div class="container">
+            <hr>
+            <footer>
+                <p>201124456 Jinwoo Park</p>
+            </footer>
+        </div>
+
 
 </body>
 
