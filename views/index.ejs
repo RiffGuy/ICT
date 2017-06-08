@@ -9,12 +9,59 @@
 	<title>
 		<%= title %> 부트스트랩 101 템플릿</title>
 
+	<link href="/stylesheets/mdb.min.css" rel="stylesheet">
+
 	<!-- 부트스트랩 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<!-- /container -->
+    <!-- /container -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-	<script src="javascripts/bootstrap.min.js"></script>
+	<script src="/javascripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/javascripts/mdb.min.js"></script>
+
+
+    <script type="text/javascript">
+        <%if (data != null){
+            var a = 0;
+            var label_list="";
+            var data_list="";
+
+            for (var i = 0 ; i < data.length; i++){
+                label_list += data[i].iot_date.getSeconds() + ", ";
+                data_list += data[i].iot_data +  ", ";
+            }
+
+            label_list.substring(0,label_list.length -2);
+            data_list.substring(0,data_list.length -2);
+        %>
+        $(function () {
+            var data = {
+            labels: [ <%= label_list %> ],
+            datasets: [
+                {
+                    label: "My First dataset",
+                    fillColor: "rgba(110,110,220,0.5)",
+                    strokeColor: "rgba(110,110,220,1)",
+                    pointColor: "rgba(110,110,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data:[ <%= data_list %>]
+                }]
+            };
+
+            var option = {
+            responsive: true,
+            };
+
+            // Get the context of the canvas element we want to select
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myLineChart = new Chart(ctx).Line(data, option); //'Line' defines type of the chart.
+
+        });
+        <% }%>
+    </script>
 </head>
 
 <body>
@@ -49,21 +96,12 @@
 		</div>
 	</nav>
 
-    <%= if (data != "null"){ %>
-	<div class="container">
-        <div class="list-group">
-            <a href="/users" class="list-group-item"><%= data[0].iot_data %></a>
-            <a href="/users" class="list-group-item"><%= data[1].iot_data %></a>
-            <a href="/users" class="list-group-item"><%= data[2].iot_data %></a>
-            <a href="/users" class="list-group-item"><%= data[3].iot_data %></a>
-            <a href="/users" class="list-group-item"><%= data[4].iot_data %></a>
+    <% if (data != null){ %>
+        <div class="container">
+            <canvas id="myChart"></canvas>
         </div>
-        <hr>
-		<footer>
-			<p>&copy; Company 2014</p>
-		</footer>
-	</div>
-    <%= } %>
+    <% } %>
+
 
     <!-- 리스트 -->
 	<div class="container">

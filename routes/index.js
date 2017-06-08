@@ -1,7 +1,7 @@
 module.exports = function(app, Data){
 
   app.get('/', function(req,res){
-      res.render('index', { data: "hello"});
+      res.render('index', {title:"aa", data: null});
   });
 
 //최근 데이터 128개 불러오기
@@ -10,7 +10,8 @@ module.exports = function(app, Data){
       if(err) return res.status(500).json({error: err});
       if(!data) return res.status(404).json({error: 'book not found'});
 //      res.json(data);
-      res.render('index', { data: data });
+
+      res.render('index', {title: req.params.iot_id, data: data });
     });
   });
 
