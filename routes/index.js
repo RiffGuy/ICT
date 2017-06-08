@@ -42,13 +42,6 @@ module.exports = function(app, Data){
   app.delete('/api/data/:iot_id', function(req,res){
     Data.remove({ iotID: req.params.iot_id }, function(err, output){
         if(err) return res.status(500).json({ error: "database failure" });
-
-    Data.find().distinct('iotID').exec(function(err, data){
-        if(err) return res.status(500).json({error: err});
-        if(!data) return res.status(404).json({error: 'book not found'});
-        //res.json(data);
-        res.render('index', {title: "main", data: null, i d_list : data });
-    });
         //res.status(204).end();
     });
   });
