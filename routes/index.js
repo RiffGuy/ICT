@@ -11,7 +11,7 @@ module.exports = function(app, Data){
 
 //최근 데이터 128개 불러오기
   app.get('/api/data/:iot_id', function(req,res){
-      Data.find({iotID: req.params.iot_id}).sort({iot_date:-1}).limit(128).exec( function(err, data){
+      Data.find({iotID: req.params.iot_id}).sort({iot_date:-1}).limit(40).exec( function(err, data){
           if(err) return res.status(500).json({error: err});
           if(!data) return res.status(404).json({error: 'book not found'});
 //      res.json(data);
@@ -41,9 +41,15 @@ module.exports = function(app, Data){
 // 데이터 삭제
   app.delete('/api/data/:iot_id', function(req,res){
     Data.remove({ iotID: req.params.iot_id }, function(err, output){
-      if(err) return res.status(500).json({ error: "database failure" });
+        if(err) return res.status(500).json({ error: "database failure" });
 
-      res.status(204).end();
+    Data.find().distinct('iotID').exec(function(err, data){
+        if(err) return res.status(500).json({error: err});
+        if(!data) return res.status(404).json({error: 'book not found'});
+        //res.json(data);
+        res.render('index', {title: "main", data: null, i d_list : data });
+    });
+        //res.status(204).end();
     });
   });
 };

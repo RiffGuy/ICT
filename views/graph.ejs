@@ -4,7 +4,7 @@
         var label_list="";
         var data_list="";
 
-        for (var i = 0 ; i < data.length; i++){
+        for (var i = data.length - 1 ; i >= 0; i--){
             label_list += data[i].iot_date.getSeconds() + ", ";
             data_list += data[i].iot_data +  ", ";
         }
@@ -18,7 +18,7 @@
         datasets: [
             {
                 label: "My First dataset",
-                fillColor: "rgba(110,110,220,0.5)",
+                fillColor: "rgba(110,110,220,0.3)",
                 strokeColor: "rgba(110,110,220,1)",
                 pointColor: "rgba(110,110,220,1)",
                 pointStrokeColor: "#fff",
@@ -29,7 +29,8 @@
         };
 
         var option = {
-        responsive: true,
+            responsive: true,
+            animation: false
         };
 
         // Get the context of the canvas element we want to select
@@ -37,8 +38,10 @@
         var myLineChart = new Chart(ctx).Line(data, option); //'Line' defines type of the chart.
 
     });
+
+    setTimeout("location.reload()",2000);
 </script>
 
-<div class="container">
+<div id="line_chart" class="container">
     <canvas id="myChart"></canvas>
 </div>

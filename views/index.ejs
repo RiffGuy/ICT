@@ -46,19 +46,34 @@
         <%- include ./graph.ejs %>
         <div class="container text-right">
             <a href="/" class="btn btn-primary" role="button">Back</a>
+            <% var path = "/api/data/" + title%>
+            <script type="text/javascript">
+            var deletefunc = function(){
+                $.ajax({
+                    url: '<%= path %>',
+                    type: 'DELETE',
+                    success: function(result) {
+                        // Do something with the result
+                    }
+                });
+            }
+            </script>
+            <a href="<%= path %>" class="btn btn-danger" onclick="deletefunc()"> DELETE</a>
         </div>
     <% } %>
 
 
     <!-- 리스트 -->
 
-    <% if (id_list != null){ %>
+    <% if (id_list != null){
+        id_list.sort();
+    %>
         <div class="container">
             <div class="list-group">
                 <% for (var i = 0; i < id_list.length ; i++){
                     var path = "/api/data/" + id_list[i];
                 %>
-                    <a href= <%= path %> class="list-group-item">id : <%=id_list[i]%></a>
+                    <a href= "<%= path %>" class="list-group-item">id : <%=id_list[i]%></a>
                 <% } %>
             </div>
         </div>
@@ -66,7 +81,7 @@
         <div class="container">
             <hr>
             <footer>
-                <p>201124456 Jinwoo Park</p>
+                <p>Pusan National University, 201124456, Jinwoo Park</p>
             </footer>
         </div>
 
