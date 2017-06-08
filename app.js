@@ -6,15 +6,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
-
-
 //Module dependencies.
 var debug = require('debug')('myapp:server');
 var http = require('http');
+
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+var Data = require('./models/data');
+var router = require('./routes')(app, Data);
+
+//app.use('/', router);
 
 //Get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || '3000');
@@ -24,7 +32,9 @@ app.set('port', port);
 var server = http.createServer(app);
 
 //Listen on provided port, on all network interfaces.
-server.listen(port);
+server.listen(port, function(){
+  console.log("Express server has started on port " + port);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -79,40 +89,12 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-
-//mongolab connect
-mongoose.connect('mongodb://ict:1234@ds151059.mlab.com:51059/ict_project', function(error) {
-//mongoose.connect('mongodb://127.0.0.1:27017', null, function(error) {
-// Check error in initial connection. There is no 2nd param to the callback.
-    console.log("Not Connected to mongolab server");
-});
-
-console.log("hehehe");
-var db = mongoose.connection;
-db.on('error', function(){
-    // CONNECTED TO MONGODB SERVER
-    console.log("DB error :",err);
-});
-db.once('open', function(){
-    // CONNECTED TO MONGODB SERVER
-    console.log("Connected to mongod server");
-});
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+//app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -132,4 +114,23 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+//module.exports = app;
+
+
+
+//mongolab connect
+var db = mongoose.connection;
+db.on('error', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("DB error :",err);
+});
+db.once('open', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+});
+
+mongoose.connect('mongodb://ict:1234@ds141098.mlab.com:41098/ict_project', function(error) {
+//mongoose.connect('mongodb://localhost:27017', function(error) {
+// Check error in initial connection. There is no 2nd param to the callback.
+    console.log("Not Connected to mongolab server");
+});
